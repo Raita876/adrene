@@ -17,15 +17,6 @@ import (
 )
 
 const (
-	SAMPLE_TEXT = `$ ll
-Permissions Size User   Date Modified    Name
-drwxr-xr-x     - sample 2020-05-17 23:27 dst/
-.rw-r--r--   178 sample 2020-05-17 18:45 go.mod
-.rw-r--r--   518 sample 2020-05-17 18:45 go.sum
-.rw-r--r--  3.2k sample 2020-05-17 23:32 main.go
-.rw-r--r--    70 sample 2020-05-17 17:24 Makefile
-`
-
 	DST_DIR = "./dst"
 )
 
@@ -147,7 +138,7 @@ func mkdir(dir string) error {
 }
 
 func main() {
-	r, err := Exec("ls -la")
+	r, err := Exec("docker --help")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -164,8 +155,8 @@ func main() {
 	text := r.Output
 
 	im := ImgMaker{
-		width:       720,
-		height:      300,
+		width:       800,
+		height:      1200,
 		marginTop:   60,
 		marginLeft:  40,
 		marginRight: 40,
@@ -176,5 +167,4 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(imgPath)
 }
