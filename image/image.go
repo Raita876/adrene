@@ -22,6 +22,7 @@ type ImgMaker struct {
 	MarginBottom int
 	FontSize     int
 	LineSpace    int
+	FontType     string
 }
 
 func black() color.RGBA { return color.RGBA{0, 0, 0, 255} }
@@ -43,7 +44,7 @@ func (im *ImgMaker) background() *image.RGBA {
 func (im *ImgMaker) face() (font.Face, error) {
 	var face font.Face
 
-	ft, err := truetype.Parse(gomonobold.TTF)
+	ft, err := truetype.Parse(im.ttf())
 	if err != nil {
 		return face, err
 	}
@@ -128,4 +129,14 @@ func (im *ImgMaker) stringToList(dr *font.Drawer, s string) []string {
 
 func (im *ImgMaker) trimming(img *image.RGBA, height int) image.Image {
 	return img.SubImage(image.Rect(0, 0, im.Width, height))
+}
+
+func (im *ImgMaker) ttf() []byte {
+	switch im.FontType {
+	case "gomonobold":
+		return gomonobold.TTF
+	default:
+		return gomonobold.TTF
+	}
+
 }

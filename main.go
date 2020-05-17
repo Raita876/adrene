@@ -34,6 +34,7 @@ func Run(cmd []string, imgPath string, opts ...Option) error {
 		MarginBottom: 0,
 		FontSize:     16,
 		LineSpace:    0,
+		FontType:     "gomonobold",
 	}
 
 	for _, o := range opts {
