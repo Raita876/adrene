@@ -147,16 +147,21 @@ func mkdir(dir string) error {
 }
 
 func main() {
+	r, err := Exec("ls -la")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	dstDir := DST_DIR
 
-	err := mkdir(dstDir)
+	err = mkdir(dstDir)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	date := time.Now().Format("20160102150405")
 	imgPath := fmt.Sprintf("./%s/%s.png", dstDir, date)
-	text := SAMPLE_TEXT
+	text := r.Output
 
 	im := ImgMaker{
 		width:       720,
