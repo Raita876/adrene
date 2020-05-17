@@ -9,13 +9,19 @@ import (
 )
 
 type Result struct {
-	Command  string
+	Command  []string
 	Output   string
 	ExitCode int
 }
 
-func Exec(cmd string) (Result, error) {
-	c := exec.Command("bash", "-co", "pipefail", cmd)
+func Exec(cmd ...string) (Result, error) {
+	var c *exec.Cmd
+
+	if len(cmd) < 2 {
+		c = exec.Command(cmd[0])
+	} else {
+		c = exec.Command(cmd[0], cmd[1:]...)
+	}
 
 	rStdout, err := c.StdoutPipe()
 	if err != nil {

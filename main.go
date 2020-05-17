@@ -139,7 +139,7 @@ func mkdir(dir string) error {
 }
 
 func main() {
-	r, err := Exec("docker --help")
+	r, err := Exec("docker", "--help")
 	if err != nil {
 		log.Fatal(err)
 	}
