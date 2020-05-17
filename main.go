@@ -48,7 +48,7 @@ func Run(cmd []string, imgPath string, opts ...Option) error {
 
 	text := r.Output
 
-	err = im.Create(imgPath, text)
+	err = im.Create(imgPath, text) //TODO: change args, text -> command.Result
 	if err != nil {
 		return err
 	}
