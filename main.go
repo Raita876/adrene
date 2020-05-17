@@ -1,11 +1,19 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"log"
+	"os"
 
 	"adrene/command"
 	"adrene/image"
+
+	"github.com/urfave/cli/v2"
+)
+
+var (
+	version string
+	name    string
 )
 
 const (
@@ -47,8 +55,35 @@ func Run(cmd []string, imgPath string, opts ...Option) error {
 }
 
 func main() {
-	imgPath := fmt.Sprintf("./%s.png", "out")
-	err := Run([]string{"docker", "--help"}, imgPath)
+	app := &cli.App{
+		Version: version,
+		Name:    name,
+		Usage:   "Adrene is a cli tool that can save the command execution result locally in png format.",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "image",
+				Aliases: []string{"i"},
+				Value:   "out.png",
+				Usage:   "Output image path.",
+			},
+		},
+		Action: func(c *cli.Context) error {
+			if c.Args().Len() == 0 {
+				return errors.New("Argument is not set.")
+			}
+
+			imgPath := c.String("image")
+			cmd := c.Args().Slice()
+			err := Run(cmd, imgPath)
+			if err != nil {
+				return err
+			}
+
+			return nil
+		},
+	}
+
+	err := app.Run(os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}
