@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
@@ -19,6 +18,10 @@ import (
 const (
 	DST_DIR = "./dst"
 )
+
+type Option interface {
+	apply(*ImgMaker)
+}
 
 type ImgMaker struct {
 	width       int
@@ -138,35 +141,40 @@ func mkdir(dir string) error {
 	return nil
 }
 
-func main() {
-	r, err := Exec("docker", "--help")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dstDir := DST_DIR
-
-	err = mkdir(dstDir)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	date := time.Now().Format("20160102150405")
-	imgPath := fmt.Sprintf("./%s/%s.png", dstDir, date)
-	text := r.Output
-
-	im := ImgMaker{
+func Run(cmd []string, imgPath string, opts ...Option) error {
+	im := &ImgMaker{
 		width:       800,
-		height:      1600,
+		height:      2000,
 		marginTop:   40,
 		marginLeft:  40,
 		marginRight: 40,
 		fontSize:    16,
 		lineSpace:   4,
 	}
+
+	for _, o := range opts {
+		o.apply(im)
+	}
+
+	r, err := Exec(cmd...)
+	if err != nil {
+		return err
+	}
+
+	text := r.Output
+
 	err = im.Create(imgPath, text)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func main() {
+	imgPath := fmt.Sprintf("./%s.png", "out")
+	err := Run([]string{"docker", "--help"}, imgPath)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
