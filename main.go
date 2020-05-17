@@ -27,6 +27,7 @@ type ImgMaker struct {
 	marginLeft  int
 	marginRight int
 	fontSize    int
+	lineSpace   int
 }
 
 func black() color.RGBA { return color.RGBA{0, 0, 0, 255} }
@@ -84,7 +85,7 @@ func (im *ImgMaker) Create(imgPath string, text string) error {
 
 	for i, s := range im.textToList(dr, text) {
 		dr.Dot.X = fixed.I(im.marginLeft)
-		dr.Dot.Y = fixed.I(im.marginTop + im.fontSize*i)
+		dr.Dot.Y = fixed.I(im.marginTop + (im.fontSize+im.lineSpace)*i)
 		dr.DrawString(s)
 	}
 
@@ -156,11 +157,12 @@ func main() {
 
 	im := ImgMaker{
 		width:       800,
-		height:      1200,
-		marginTop:   60,
+		height:      1600,
+		marginTop:   40,
 		marginLeft:  40,
 		marginRight: 40,
 		fontSize:    16,
+		lineSpace:   4,
 	}
 	err = im.Create(imgPath, text)
 	if err != nil {
