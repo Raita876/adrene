@@ -14,13 +14,14 @@ import (
 )
 
 type ImgMaker struct {
-	Width       int
-	Height      int
-	MarginTop   int
-	MarginLeft  int
-	MarginRight int
-	FontSize    int
-	LineSpace   int
+	Width        int
+	LimitHeight  int
+	MarginTop    int
+	MarginLeft   int
+	MarginRight  int
+	MarginBottom int
+	FontSize     int
+	LineSpace    int
 }
 
 func black() color.RGBA { return color.RGBA{0, 0, 0, 255} }
@@ -28,9 +29,9 @@ func black() color.RGBA { return color.RGBA{0, 0, 0, 255} }
 func white() color.RGBA { return color.RGBA{255, 255, 255, 255} }
 
 func (im *ImgMaker) background() *image.RGBA {
-	img := image.NewRGBA(image.Rect(0, 0, im.Width, im.Height))
+	img := image.NewRGBA(image.Rect(0, 0, im.Width, im.LimitHeight))
 
-	for i := 0; i < im.Height; i++ {
+	for i := 0; i < im.LimitHeight; i++ {
 		for j := 0; j < im.Width; j++ {
 			img.Set(j, i, black())
 		}
@@ -76,11 +77,15 @@ func (im *ImgMaker) Create(imgPath string, text string) error {
 		Dot:  fixed.Point26_6{},
 	}
 
-	for i, s := range im.textToList(dr, text) {
+	tl := im.textToList(dr, text)
+	for i, s := range tl {
 		dr.Dot.X = fixed.I(im.MarginLeft)
 		dr.Dot.Y = fixed.I(im.MarginTop + (im.FontSize+im.LineSpace)*i)
 		dr.DrawString(s)
 	}
+
+	h := im.MarginTop + (im.FontSize+im.LineSpace)*(len(tl)) + im.MarginBottom
+	tImg := im.trimming(img, h)
 
 	file, err := os.Create(imgPath)
 	if err != nil {
@@ -88,7 +93,7 @@ func (im *ImgMaker) Create(imgPath string, text string) error {
 	}
 	defer file.Close()
 
-	err = png.Encode(file, img)
+	err = png.Encode(file, tImg)
 	if err != nil {
 		return err
 	}
@@ -119,4 +124,8 @@ func (im *ImgMaker) stringToList(dr *font.Drawer, s string) []string {
 	sl = append(sl, s[point:])
 
 	return sl
+}
+
+func (im *ImgMaker) trimming(img *image.RGBA, height int) image.Image {
+	return img.SubImage(image.Rect(0, 0, im.Width, height))
 }

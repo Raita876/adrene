@@ -26,13 +26,14 @@ type Option interface {
 
 func Run(cmd []string, imgPath string, opts ...Option) error {
 	im := &image.ImgMaker{
-		Width:       800,
-		Height:      2000,
-		MarginTop:   40,
-		MarginLeft:  40,
-		MarginRight: 40,
-		FontSize:    16,
-		LineSpace:   4,
+		Width:        800,
+		LimitHeight:  2400,
+		MarginTop:    40,
+		MarginLeft:   40,
+		MarginRight:  40,
+		MarginBottom: 0,
+		FontSize:     16,
+		LineSpace:    0,
 	}
 
 	for _, o := range opts {
