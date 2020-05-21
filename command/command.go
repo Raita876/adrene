@@ -61,7 +61,7 @@ func Exec(cmd ...string) (Result, error) {
 	wg.Wait()
 
 	err = c.Wait()
-	if err != nil {
+	if _, ok := err.(*exec.ExitError); err != nil && !ok {
 		return Result{}, err
 	}
 
