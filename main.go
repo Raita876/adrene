@@ -35,6 +35,7 @@ func Run(cmd []string, imgPath string, opts ...Option) error {
 		FontSize:     16,
 		LineSpace:    4,
 		FontType:     "gomonobold",
+		Prompt:       "$",
 	}
 
 	for _, o := range opts {
@@ -46,9 +47,7 @@ func Run(cmd []string, imgPath string, opts ...Option) error {
 		return err
 	}
 
-	text := r.Output
-
-	err = im.Create(imgPath, text) //TODO: change args, text -> command.Result
+	err = im.Create(imgPath, r)
 	if err != nil {
 		return err
 	}

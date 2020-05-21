@@ -1,11 +1,14 @@
 package image
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
 	"os"
 	"strings"
+
+	"adrene/command"
 
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
@@ -23,6 +26,7 @@ type ImgMaker struct {
 	FontSize     int
 	LineSpace    int
 	FontType     string
+	Prompt       string
 }
 
 func black() color.RGBA { return color.RGBA{0, 0, 0, 255} }
@@ -63,7 +67,7 @@ func (im *ImgMaker) face() (font.Face, error) {
 	return face, nil
 }
 
-func (im *ImgMaker) Create(imgPath string, text string) error {
+func (im *ImgMaker) Create(imgPath string, result command.Result) error {
 
 	img := im.background()
 	face, err := im.face()
@@ -78,7 +82,11 @@ func (im *ImgMaker) Create(imgPath string, text string) error {
 		Dot:  fixed.Point26_6{},
 	}
 
-	tl := im.textToList(dr, text)
+	tl := im.textToList(dr, result.Output)
+
+	cmd := strings.Join(result.Command, " ")
+	tl, tl[0] = append(tl[:1], tl[0:]...), fmt.Sprintf("%s %s", im.Prompt, cmd)
+
 	for i, s := range tl {
 		dr.Dot.X = fixed.I(im.MarginLeft)
 		dr.Dot.Y = fixed.I(im.MarginTop + (im.FontSize+im.LineSpace)*i)
