@@ -33,7 +33,7 @@ func Run(cmd []string, imgPath string, opts ...Option) error {
 		MarginRight:  40,
 		MarginBottom: 0,
 		FontSize:     16,
-		LineSpace:    0,
+		LineSpace:    4,
 		FontType:     "gomonobold",
 	}
 
