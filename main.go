@@ -71,7 +71,7 @@ func main() {
 		},
 		Action: func(c *cli.Context) error {
 			if c.Args().Len() == 0 {
-				return errors.New("Argument is not set.")
+				return errors.New("Argument is not set")
 			}
 
 			imgPath := c.String("image")
