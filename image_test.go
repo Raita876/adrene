@@ -39,17 +39,17 @@ func TestCreate(t *testing.T) {
 	for _, tt := range tests {
 		err := im.Create(tt.imgPath, tt.result)
 		if err != nil {
-			t.Error("Failure ImgMaker.Create()")
+			t.Fatal(err)
 		}
 
 		got, err := FileBytes(tt.imgPath)
 		if err != nil {
-			t.Fatal("Failure get bytes png file")
+			t.Fatal(err)
 		}
 
 		want, err := FileBytes(tt.want)
 		if err != nil {
-			t.Fatal("Failure get bytes png file")
+			t.Fatal(err)
 		}
 
 		if diff := cmp.Diff(got, want); diff != "" {
