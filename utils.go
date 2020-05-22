@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// FileBytes returns bytes of file.
 func FileBytes(path string) ([]byte, error) {
 	f, err := os.Open(path)
 	if err != nil {
