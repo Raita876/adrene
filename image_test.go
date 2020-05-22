@@ -1,11 +1,17 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+
+	"github.com/google/go-cmp/cmp"
+)
 
 func TestCreate(t *testing.T) {
 	tests := []struct {
 		imgPath string
 		result  Result
+		want    string
 	}{
 		{
 			imgPath: "tmp.png",
@@ -14,6 +20,7 @@ func TestCreate(t *testing.T) {
 				Output:   "Hello World\n",
 				ExitCode: 0,
 			},
+			want: "want.png",
 		},
 	}
 
@@ -36,5 +43,35 @@ func TestCreate(t *testing.T) {
 			t.Error("Failure ImgMaker.Create()")
 		}
 
+		got, err := fileBytes(tt.imgPath)
+		if err != nil {
+			t.Fatal("Failure get bytes png file")
+		}
+
+		want, err := fileBytes(tt.want)
+		if err != nil {
+			t.Fatal("Failure get bytes png file")
+		}
+
+		if diff := cmp.Diff(got, want); diff != "" {
+			t.Errorf("Result missmatch (-got +want):\n%s", diff)
+		}
+
 	}
+}
+
+func fileBytes(path string) ([]byte, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return []byte{}, err
+	}
+	defer f.Close()
+
+	b := []byte{}
+	_, err = f.Read(b)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return b, nil
 }
