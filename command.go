@@ -8,12 +8,14 @@ import (
 	"sync"
 )
 
+// Result is a structure that holds the execution result of the command
 type Result struct {
 	Command  []string
 	Output   string
 	ExitCode int
 }
 
+// Exec returns the execution result of the passed command.
 func Exec(cmd ...string) (Result, error) {
 	var c *exec.Cmd
 
