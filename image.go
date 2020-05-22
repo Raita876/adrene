@@ -82,8 +82,7 @@ func (im *ImgMaker) Create(imgPath string, result Result) error {
 
 	tl := im.textToList(dr, result.Output)
 	cmd := strings.Join(result.Command, " ")
-	tl = append(tl[:1], tl[0:]...)
-	tl[0] = fmt.Sprintf("%s %s", im.Prompt, cmd)
+	tl = append([]string{fmt.Sprintf("%s %s", im.Prompt, cmd)}, tl...)
 
 	for i, s := range tl {
 		dr.Dot.X = fixed.I(im.MarginLeft)
