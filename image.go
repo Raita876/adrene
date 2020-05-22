@@ -14,6 +14,7 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
+// ImgMaker is a structure that holds the settings when creating an image.
 type ImgMaker struct {
 	Width        int
 	LimitHeight  int
@@ -65,6 +66,7 @@ func (im *ImgMaker) face() (font.Face, error) {
 	return face, nil
 }
 
+// Create is a function that creates an image file based on ImgMaker settings and command execution results.
 func (im *ImgMaker) Create(imgPath string, result Result) error {
 
 	img := im.background()
