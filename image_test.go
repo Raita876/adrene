@@ -1,8 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
-	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -44,12 +42,12 @@ func TestCreate(t *testing.T) {
 			t.Error("Failure ImgMaker.Create()")
 		}
 
-		got, err := fileBytes(tt.imgPath)
+		got, err := FileBytes(tt.imgPath)
 		if err != nil {
 			t.Fatal("Failure get bytes png file")
 		}
 
-		want, err := fileBytes(tt.want)
+		want, err := FileBytes(tt.want)
 		if err != nil {
 			t.Fatal("Failure get bytes png file")
 		}
@@ -59,19 +57,4 @@ func TestCreate(t *testing.T) {
 		}
 
 	}
-}
-
-func fileBytes(path string) ([]byte, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return []byte{}, err
-	}
-	defer f.Close()
-
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
-		return []byte{}, err
-	}
-
-	return b, nil
 }
