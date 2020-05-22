@@ -17,7 +17,7 @@ func TestRun(t *testing.T) {
 			cmd:     []string{"echo", "Hello World"},
 			imgPath: "tmp.png",
 			opts:    []Option{},
-			want:    "test/want.png",
+			want:    "test/default.png",
 		},
 	}
 

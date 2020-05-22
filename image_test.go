@@ -19,7 +19,7 @@ func TestCreate(t *testing.T) {
 				Output:   "Hello World\n",
 				ExitCode: 0,
 			},
-			want: "test/want.png",
+			want: "test/default.png",
 		},
 	}
 
