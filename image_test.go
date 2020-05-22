@@ -21,7 +21,7 @@ func TestCreate(t *testing.T) {
 				Output:   "Hello World\n",
 				ExitCode: 0,
 			},
-			want: "want.png",
+			want: "test/want.png",
 		},
 	}
 
