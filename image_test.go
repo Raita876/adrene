@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 	"testing"
 
@@ -67,8 +68,7 @@ func fileBytes(path string) ([]byte, error) {
 	}
 	defer f.Close()
 
-	b := []byte{}
-	_, err = f.Read(b)
+	b, err := ioutil.ReadAll(f)
 	if err != nil {
 		return []byte{}, err
 	}
