@@ -20,10 +20,10 @@ func TestExec(t *testing.T) {
 			},
 		},
 		{
-			cmd: []string{"ls", "xxxxxx"},
+			cmd: []string{"false"},
 			want: Result{
-				Command:  []string{"ls", "xxxxxx"},
-				Output:   "ls: xxxxxx: No such file or directory\n",
+				Command:  []string{"false"},
+				Output:   "",
 				ExitCode: 1,
 			},
 		},
