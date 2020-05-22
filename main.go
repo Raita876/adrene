@@ -5,9 +5,6 @@ import (
 	"log"
 	"os"
 
-	"adrene/command"
-	"adrene/image"
-
 	"github.com/urfave/cli/v2"
 )
 
@@ -21,11 +18,11 @@ const (
 )
 
 type Option interface {
-	apply(*image.ImgMaker)
+	apply(*ImgMaker)
 }
 
 func Run(cmd []string, imgPath string, opts ...Option) error {
-	im := &image.ImgMaker{
+	im := &ImgMaker{
 		Width:        800,
 		LimitHeight:  2400,
 		MarginTop:    40,
@@ -42,7 +39,7 @@ func Run(cmd []string, imgPath string, opts ...Option) error {
 		o.apply(im)
 	}
 
-	r, err := command.Exec(cmd...)
+	r, err := Exec(cmd...)
 	if err != nil {
 		return err
 	}

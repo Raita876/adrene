@@ -1,4 +1,4 @@
-package image
+package main
 
 import (
 	"fmt"
@@ -7,8 +7,6 @@ import (
 	"image/png"
 	"os"
 	"strings"
-
-	"adrene/command"
 
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
@@ -67,7 +65,7 @@ func (im *ImgMaker) face() (font.Face, error) {
 	return face, nil
 }
 
-func (im *ImgMaker) Create(imgPath string, result command.Result) error {
+func (im *ImgMaker) Create(imgPath string, result Result) error {
 
 	img := im.background()
 	face, err := im.face()
