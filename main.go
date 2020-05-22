@@ -13,14 +13,13 @@ var (
 	name    string
 )
 
-const (
-	DST_DIR = "./dst"
-)
-
+// Option is a structure that reflects the settings used when creating an image with Run().
 type Option interface {
 	apply(*ImgMaker)
 }
 
+// Run create The result of the command is output as an image file.
+// The output destination is set with imgPath.
 func Run(cmd []string, imgPath string, opts ...Option) error {
 	im := &ImgMaker{
 		Width:        800,
